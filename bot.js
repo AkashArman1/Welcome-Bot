@@ -32,9 +32,8 @@ function WelcomeNewMember(member) {
 👋 Welcome to **Dudh Dhamaka**, ${member} 🎉
 
 We’re happy to have you here! ✨  
-➡️ Check out <#rules> so you know the guidelines  
-➡️ Grab your roles in <#roles> to unlock channels  
-➡️ Say hi in <#general> and meet the community  
+➡️ Check out <#📝-milk-etiquette> so you know the guidelines    
+➡️ Say hi in <#〔💬〕only-chat> and meet the community  
 
 Enjoy your stay 🫦
         `,
@@ -75,9 +74,8 @@ function SendDM(member) {
 Hi ${member} 👋
 
 We’re thrilled to have you join our community! ✨  
-➡️ Check the rules to stay in the loop  
-➡️ Pick your roles to unlock channels  
-➡️ Say hi in #general and meet everyone  
+➡️ Check the rules to stay in the loop    
+➡️ Say hi in #〔💬〕only-chat and meet everyone  
 
 Enjoy your stay 💫
         `,
