@@ -38,7 +38,7 @@ We’re happy to have you here! ✨
 Enjoy your stay 🫦
         `,
         image: {
-            url: 'https://images2.imgbox.com/40/d9/danOT4yp_o.jpg' // Replace with your own GIF if you want
+            url: 'https://media1.tenor.com/m/990MomrAHwEAAAAd/welcome-new-members-senko-san.gif' // Replace with your own GIF if you want
         }
     };
 
