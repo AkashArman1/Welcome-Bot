@@ -5,9 +5,11 @@ const client = new Client({
     intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
 });
 
-// 🔒 Use environment variables (set these in Render)
+// 🔒 Environment variables (set these in Render)
 const token = process.env.DISCORD_TOKEN;
 const WELCOME_CHANNEL_ID = process.env.WELCOME_CHANNEL_ID || 'YOUR_CHANNEL_ID_HERE';
+const WELCOME_ROLE_NAME = process.env.WELCOME_ROLE_NAME || 'Member'; // Role to assign
+const DM_GIF_URL = process.env.DM_GIF_URL || 'https://media.giphy.com/media/3o7aCTfyhYawdOXcFW/giphy.gif'; // Optional DM GIF
 
 console.log('Starting bot, please give me a second.');
 
@@ -16,16 +18,15 @@ client.on('ready', () => {
 });
 
 client.on("guildMemberAdd", member => {
-    WelcomeNewMember(member);
+    WelcomeNewMember(member);  // server welcome
+    AssignRole(member);         // role assignment
+    SendDM(member);             // personal DM
 });
 
-// ✅ Welcome function with GIF
+// ✅ Welcome message in server with GIF
 function WelcomeNewMember(member) {
-    const channelId = WELCOME_CHANNEL_ID;
-
-    // Create an embed message
     const welcomeEmbed = {
-        color: 0xFFD700, // optional color
+        color: 0xFFD700,
         title: `WELCOME TO DUDH DHAMAKA! 🥛✨`,
         description: `
 👋 Welcome to **Dudh Dhamaka**, ${member} 🎉
@@ -38,18 +39,56 @@ We’re happy to have you here! ✨
 Enjoy your stay 🫦
         `,
         image: {
-            url: 'https://c.tenor.com/990MomrAHwEAAAAd/tenor.gif' // Replace with your own GIF if you want
+            url: 'https://media.giphy.com/media/3o7aCTfyhYawdOXcFW/giphy.gif' // Replace with your GIF
         }
     };
 
-    client.channels.fetch(channelId)
+    client.channels.fetch(WELCOME_CHANNEL_ID)
         .then(channel => {
             setTimeout(() => {
-                console.log("Welcoming a new member with a GIF.");
+                console.log("Welcoming a new member with a GIF in the server.");
                 channel.send({ embeds: [welcomeEmbed] });
             }, 1000);
         })
         .catch(console.error);
+}
+
+// ✅ Role assignment
+function AssignRole(member) {
+    const role = member.guild.roles.cache.find(r => r.name === WELCOME_ROLE_NAME);
+    if (!role) {
+        console.log(`Role "${WELCOME_ROLE_NAME}" not found!`);
+        return;
+    }
+
+    member.roles.add(role)
+        .then(() => console.log(`Added role "${role.name}" to ${member.user.tag}`))
+        .catch(console.error);
+}
+
+// ✅ Personal DM
+function SendDM(member) {
+    const dmEmbed = {
+        color: 0xFFD700,
+        title: `Welcome to Dudh Dhamaka! 🎉`,
+        description: `
+Hi ${member} 👋
+
+We’re thrilled to have you join our community! ✨  
+➡️ Check the rules to stay in the loop  
+➡️ Pick your roles to unlock channels  
+➡️ Say hi in #general and meet everyone  
+
+Enjoy your stay 💫
+        `,
+        image: {
+            url: DM_GIF_URL
+        }
+    };
+
+    member.send({ embeds: [dmEmbed] })
+        .then(() => console.log(`Sent DM to ${member.user.tag}`))
+        .catch(err => console.log(`Could not DM ${member.user.tag}: ${err}`));
 }
 
 client.login(token);
