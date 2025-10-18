@@ -53,8 +53,8 @@ Enjoy your stay 🫦
 }
 
 // ✅ Role assignment
-function AssignRole("Dudh Family") {
-    const role = Dudh Family.guild.roles.cache.get("1416494280624705648"); // paste your role ID here
+function AssignRole(member) {
+    const role = member.guild.roles.cache.get("1416494280624705648"); // paste your role ID here
     if (!role) {
         console.log(`Role "${WELCOME_ROLE_NAME}" not found!`);
         return;
