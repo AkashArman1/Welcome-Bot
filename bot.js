@@ -1,12 +1,20 @@
 const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS] });
-const { token } = require('./config.json'); // STEP 1. Make sure to include your bot token from Discord in the config.json file.
 
-const WELCOME_CHANNEL_ID = 'YOUR WELCOME CHANNEL ID HERE'; // STEP 2. Copy the channel ID of where you want the bot to welcome new members here.
+// Create Discord client
+const client = new Client({
+    intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
+});
+
+// 🔒 Use environment variable for security (set this in Render)
+const token = process.env.DISCORD_TOKEN;
+
+// Use your channel ID (replace or set via Render environment variable)
+const WELCOME_CHANNEL_ID = process.env.WELCOME_CHANNEL_ID || 'YOUR_CHANNEL_ID_HERE';
 
 console.log('Starting bot, please give me a second.');
+
 client.on('ready', () => {
-    console.log('I am ready to welcome people!');
+    console.log(`I am ready to welcome people as ${client.user.tag}!`);
 });
 
 client.on("guildMemberAdd", member => {
@@ -14,32 +22,27 @@ client.on("guildMemberAdd", member => {
 });
 
 function WelcomeNewMember(member) {
+    const welcomeMessage = `
+**WELCOME TO DUDH DHAMAKA! 🥛✨**
 
-    // STEP 3. (optional) Edit this array to add, change, or remove welcoming messages.
-    const WELCOME_MESSAGES = [
-        `Welcome, ${member}!`,
-        `Glad to have you here, ${member}.`,
-        `${member}, how are you?`,
-        `Would you like to choose a role, ${member}?`
-    ];
+👋 Welcome to **Dudh Dhamaka**, ${member} 🎉
 
-    const channel = client.channels.fetch(WELCOME_CHANNEL_ID)
+We’re happy to have you here! ✨  
+➡️ Check out <#rules> so you know the guidelines  
+➡️ Grab your roles in <#roles> to unlock channels  
+➡️ Say hi in <#general> and meet the community  
+
+Enjoy your stay 🫦
+`;
+
+    client.channels.fetch(WELCOME_CHANNEL_ID)
         .then(channel => {
-
-            // This line selects a random message from the WELCOME_MESSAGES array.
-            let welcomeMessage = WELCOME_MESSAGES[Math.floor(Math.random() * WELCOME_MESSAGES.length)];
-
-            // Sending the welcome message 1 second after the member joins, to make sure they get properly tagged.
-            setTimeout(function () {
-
+            setTimeout(() => {
                 console.log("Welcoming a new member.");
                 channel.send(welcomeMessage);
-
             }, 1000);
-
         })
         .catch(console.error);
-
 }
 
 client.login(token);
