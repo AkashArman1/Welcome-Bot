@@ -5,10 +5,8 @@ const client = new Client({
     intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
 });
 
-// 🔒 Use environment variable for security (set this in Render)
+// 🔒 Use environment variables (set these in Render)
 const token = process.env.DISCORD_TOKEN;
-
-// Use your channel ID (replace or set via Render environment variable)
 const WELCOME_CHANNEL_ID = process.env.WELCOME_CHANNEL_ID || 'YOUR_CHANNEL_ID_HERE';
 
 console.log('Starting bot, please give me a second.');
@@ -21,10 +19,15 @@ client.on("guildMemberAdd", member => {
     WelcomeNewMember(member);
 });
 
+// ✅ Welcome function with GIF
 function WelcomeNewMember(member) {
-    const welcomeMessage = `
-**WELCOME TO DUDH DHAMAKA! 🥛✨**
+    const channelId = WELCOME_CHANNEL_ID;
 
+    // Create an embed message
+    const welcomeEmbed = {
+        color: 0xFFD700, // optional color
+        title: `WELCOME TO DUDH DHAMAKA! 🥛✨`,
+        description: `
 👋 Welcome to **Dudh Dhamaka**, ${member} 🎉
 
 We’re happy to have you here! ✨  
@@ -33,13 +36,17 @@ We’re happy to have you here! ✨
 ➡️ Say hi in <#general> and meet the community  
 
 Enjoy your stay 🫦
-`;
+        `,
+        image: {
+            url: 'https://images2.imgbox.com/40/d9/danOT4yp_o.jpg' // Replace with your own GIF if you want
+        }
+    };
 
-    client.channels.fetch(WELCOME_CHANNEL_ID)
+    client.channels.fetch(channelId)
         .then(channel => {
             setTimeout(() => {
-                console.log("Welcoming a new member.");
-                channel.send(welcomeMessage);
+                console.log("Welcoming a new member with a GIF.");
+                channel.send({ embeds: [welcomeEmbed] });
             }, 1000);
         })
         .catch(console.error);
