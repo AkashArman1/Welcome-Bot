@@ -39,7 +39,7 @@ We’re happy to have you here! ✨
 Enjoy your stay 🫦
         `,
         image: {
-            url: 'https://media.giphy.com/media/3o7aCTfyhYawdOXcFW/giphy.gif' // Replace with your GIF
+            url: 'https://c.tenor.com/990MomrAHwEAAAAd/tenor.gif' // Replace with your GIF
         }
     };
 
